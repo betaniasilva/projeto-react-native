@@ -1,0 +1,204 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { z } from 'zod';
+import { BorderRadius, Colors, Spacing, Typography } from '../../constants/Theme';
+
+/**
+ * LoginScreen.tsx (mínimo, apenas tela de login)
+ * - React Native + Expo + TypeScript
+ * - Validação com React Hook Form + Zod
+ * - Sem biometria / sem SecureStore / sem navegação
+ * - Deixa um callback opcional `onSubmitSuccess` para o app pai lidar com navegação
+ */
+
+const schema = z.object({
+  email: z.string().email('Informe um e-mail válido.'),
+  password: z.string().min(6, 'A senha deve ter ao menos 6 caracteres.'),
+});
+
+type FormValues = z.infer<typeof schema>;
+
+type Props = {
+  onSubmitSuccess?: (values: FormValues) => void | Promise<void>;
+  loading?: boolean;
+};
+
+export default function LoginScreen({ onSubmitSuccess, loading: loadingProp }: Props) {
+  const [secure, setSecure] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { email: '', password: '' },
+  });
+
+  const onSubmit = async (values: FormValues) => {
+    try {
+      setLoading(true);
+      // 🔗 Chame sua API aqui. Exemplo:
+      // const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/auth/login`, {...})
+      // if (!res.ok) throw new Error('Credenciais inválidas');
+
+      // Por agora, só simula sucesso
+      await new Promise((r) => setTimeout(r, 700));
+      onSubmitSuccess?.(values);
+      Alert.alert('🎬 Bem-vindo de volta!', 'Login realizado com sucesso no CineFila!');
+    } catch (e: any) {
+      Alert.alert('Erro ao entrar', e?.message ?? 'Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isSubmitting = loading || loadingProp;
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Entrar no CineFila</Text>
+      <Text style={styles.subtitle}>Acesse sua conta e continue navegando</Text>
+
+      <View style={styles.form}>
+        <Text style={styles.label}>E-mail</Text>
+        <Controller
+          control={control}
+          name="email"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={[styles.input, errors.email && styles.inputError]}
+              placeholder="seu@email.com"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              accessible
+              accessibilityLabel="Campo de e-mail"
+              returnKeyType="next"
+            />
+          )}
+        />
+        {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+
+        <Text style={[styles.label, { marginTop: 14 }]}>Senha</Text>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <View>
+              <TextInput
+                style={[styles.input, errors.password && styles.inputError]}
+                placeholder="Sua senha"
+                secureTextEntry={secure}
+                textContentType="password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                accessible
+                accessibilityLabel="Campo de senha"
+                returnKeyType="done"
+              />
+              <TouchableOpacity
+                onPress={() => setSecure((s) => !s)}
+                style={styles.showBtn}
+                accessibilityRole="button"
+                accessibilityLabel={secure ? 'Mostrar senha' : 'Ocultar senha'}
+              >
+                <Text style={styles.showBtnText}>{secure ? 'Mostrar' : 'Ocultar'}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+        {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
+        <TouchableOpacity
+          onPress={handleSubmit(onSubmit)}
+          style={[styles.button, isSubmitting && styles.buttonDisabled]}
+          disabled={isSubmitting}
+          accessibilityRole="button"
+          accessibilityLabel="Entrar"
+        >
+          {isSubmitting ? <ActivityIndicator /> : <Text style={styles.buttonText}>Entrar</Text>}
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: 80,
+    backgroundColor: Colors.night,
+  },
+  title: {
+    fontSize: Typography.fontSize['3xl'],
+    fontFamily: 'Poppins_700Bold',
+    color: Colors.textPrimary,
+  },
+  subtitle: {
+    marginTop: 6,
+    fontSize: Typography.fontSize.base,
+    color: Colors.slate,
+    fontFamily: 'Inter_400Regular',
+  },
+  form: {
+    marginTop: 28,
+    gap: Spacing.sm,
+  },
+  label: {
+    color: Colors.textSecondary,
+    fontSize: Typography.fontSize.sm,
+    fontFamily: 'Inter_500Medium',
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: Colors.nightLight,
+    borderWidth: 1,
+    borderColor: Colors.textMuted,
+    color: Colors.textPrimary,
+    fontFamily: 'Inter_400Regular',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: BorderRadius.md,
+  },
+  inputError: {
+    borderColor: Colors.error,
+  },
+  error: {
+    color: Colors.error,
+    fontSize: Typography.fontSize.xs,
+    fontFamily: 'Inter_400Regular',
+    marginTop: 4,
+  },
+  showBtn: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 4,
+  },
+  showBtnText: {
+    color: Colors.pipoca,
+    fontSize: Typography.fontSize.xs,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  button: {
+    marginTop: Spacing.md,
+    backgroundColor: Colors.pipoca,
+    paddingVertical: 14,
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
+  buttonText: {
+    color: Colors.night,
+    fontSize: Typography.fontSize.base,
+    fontFamily: 'Poppins_700Bold',
+  },
+});
