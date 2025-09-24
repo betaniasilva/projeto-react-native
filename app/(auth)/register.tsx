@@ -43,6 +43,10 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
   });
 
   const onSubmit = async (values: FormValues) => {
+    // LOG 1: Verificando se a função foi chamada
+    console.log('Função onSubmit foi chamada!');
+    console.log('Dados recebidos do formulário:', values);
+
     setLoading(true);
     try {
       // 1. Gerar ID e Hash da Senha
@@ -81,6 +85,8 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
       Alert.alert('🍿 Conta criada!', 'Bem-vindo ao CineFila! Seus dados foram salvos localmente.');
 
     } catch (e: any) {
+      // LOG 2: Verificando se ocorreu algum erro
+      console.error('ERRO CAPTURADO NO CATCH:', e);
       Alert.alert('Erro ao criar conta', e?.message ?? 'Tente novamente.');
     } finally {
       setLoading(false);
