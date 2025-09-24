@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Crypto from 'expo-crypto';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,6 +12,7 @@ import { BorderRadius, Colors, Spacing, Typography } from '../../constants/Theme
  * - React Native + Expo + TypeScript
  * - Validação com React Hook Form + Zod
  * - Cadastro com nome, email, senha e confirmação de senha
+ * - Salva os dados localmente com AsyncStorage
  */
 
 const schema = z.object({
@@ -40,16 +43,43 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
   });
 
   const onSubmit = async (values: FormValues) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      // 🔗 Chame sua API aqui. Exemplo:
-      // const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/auth/register`, {...})
-      // if (!res.ok) throw new Error('Erro ao criar conta');
+      // 1. Gerar ID e Hash da Senha
+      const userId = Crypto.randomUUID();
+      const passwordHash = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        values.password
+      );
 
-      // Por agora, só simula sucesso
+      const newUser = {
+        id: userId,
+        name: values.name,
+        email: values.email,
+        passwordHash: passwordHash, // Salvar o hash, não a senha!
+      };
+
+      // 2. Ler os dados existentes no AsyncStorage
+      const existingUsersJson = await AsyncStorage.getItem('users');
+      
+      // Se já existirem usuários, converte de JSON para array, senão, cria um array vazio
+      const users = existingUsersJson ? JSON.parse(existingUsersJson) : [];
+
+      // 3. Verificar se o e-mail já existe
+      const emailExists = users.some((user: any) => user.email === newUser.email);
+      if (emailExists) {
+        throw new Error('Este e-mail já está cadastrado.');
+      }
+
+      // 4. Adicionar o novo usuário e salvar de volta
+      users.push(newUser);
+      await AsyncStorage.setItem('users', JSON.stringify(users));
+
+      // 5. Simula a chamada da API e exibe o alerta de sucesso
       await new Promise((r) => setTimeout(r, 700));
-      onSubmitSuccess?.(values);
-      Alert.alert('🍿 Conta criada!', 'Bem-vindo ao CineFila! Sua jornada cinematográfica começa agora.');
+      onSubmitSuccess?.(values); // Chama a função de sucesso, se houver
+      Alert.alert('🍿 Conta criada!', 'Bem-vindo ao CineFila! Seus dados foram salvos localmente.');
+
     } catch (e: any) {
       Alert.alert('Erro ao criar conta', e?.message ?? 'Tente novamente.');
     } finally {
@@ -177,7 +207,7 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
           accessibilityRole="button"
           accessibilityLabel="Criar conta"
         >
-          {isSubmitting ? <ActivityIndicator /> : <Text style={styles.buttonText}>Criar Conta</Text>}
+          {isSubmitting ? <ActivityIndicator color={Colors.night} /> : <Text style={styles.buttonText}>Criar Conta</Text>}
         </TouchableOpacity>
       </View>
     </View>

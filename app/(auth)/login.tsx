@@ -5,13 +5,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity
 import { z } from 'zod';
 import { BorderRadius, Colors, Spacing, Typography } from '../../constants/Theme';
 
-/**
- * LoginScreen.tsx (mínimo, apenas tela de login)
- * - React Native + Expo + TypeScript
- * - Validação com React Hook Form + Zod
- * - Sem biometria / sem SecureStore / sem navegação
- * - Deixa um callback opcional `onSubmitSuccess` para o app pai lidar com navegação
- */
+
 
 const schema = z.object({
   email: z.string().email('Informe um e-mail válido.'),
