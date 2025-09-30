@@ -1,12 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import { BorderRadius, Colors, Spacing, Typography } from "../constants/Theme";
 
 export type MovieActionButtonProps = {
   label: string;
   onPress?: () => void;
   icon?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
 };
 
