@@ -1,16 +1,22 @@
-import { router } from 'expo-router';
-import React from 'react';
-import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CineFilaLogo from '../components/CineFilaLogo';
-import Filmstrip from '../components/Filmstrip';
+import { router } from "expo-router";
+import React from "react";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import CineFilaLogo from "../components/CineFilaLogo";
+import Filmstrip from "../components/Filmstrip";
 
 export default function WelcomeScreen() {
   const handleLogin = () => {
-    router.push('/(auth)/login');
+    router.push("/(auth)/login");
   };
 
   const handleRegister = () => {
-    router.push('/(auth)/register');
+    router.push("/(auth)/register");
   };
 
   return (
@@ -32,7 +38,9 @@ export default function WelcomeScreen() {
       {/* Ilustração/Imagem central */}
       <View style={styles.imageContainer}>
         <Filmstrip width={320} height={80} color="#94A3B8" />
-        <Text style={styles.imageText}>Salve aquela dica de filme para assistir quando tiver tempo!</Text>
+        <Text style={styles.imageText}>
+          Salve aquela dica de filme para assistir quando tiver tempo!
+        </Text>
       </View>
 
       {/* Botões de ação */}
@@ -60,23 +68,15 @@ export default function WelcomeScreen() {
           <Text style={styles.dividerText}>ou</Text>
           <View style={styles.dividerLine} />
         </View>
-
-        <TouchableOpacity
-          style={styles.guestButton}
-          onPress={() => {/* Implementar acesso como convidado */ }}
-          accessibilityRole="button"
-          accessibilityLabel="Continuar como convidado"
-        >
-          <Text style={styles.guestButtonText}>👤 Explorar como visitante</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          Ao continuar, você concorda com nossos{' '}
-          <Text style={styles.linkText}>Termos de Uso</Text> e{' '}
-          <Text style={styles.linkText}>Política de Privacidade</Text> do CineFila
+          Ao continuar, você concorda com nossos{" "}
+          <Text style={styles.linkText}>Termos de Uso</Text> e{" "}
+          <Text style={styles.linkText}>Política de Privacidade</Text> do
+          CineFila
         </Text>
       </View>
     </View>
@@ -86,138 +86,138 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: "#0f172a",
     paddingHorizontal: 20,
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 60,
     paddingBottom: 20,
   },
   logoContainer: {
     width: 80,
     height: 80,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 16,
   },
   logoText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   appName: {
     fontSize: 36,
-    fontWeight: '800',
-    fontFamily: 'Poppins_700Bold',
-    color: '#FFD166',
+    fontWeight: "800",
+    fontFamily: "Poppins_700Bold",
+    color: "#FFD166",
     marginBottom: 4,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
   slogan: {
     fontSize: 14,
-    color: '#FFD166',
-    fontFamily: 'Manrope_500Medium',
-    fontStyle: 'italic',
+    color: "#FFD166",
+    fontFamily: "Manrope_500Medium",
+    fontStyle: "italic",
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   welcomeTitle: {
     fontSize: 32,
-    fontWeight: '700',
-    color: '#e2e8f0',
+    fontWeight: "700",
+    color: "#e2e8f0",
     marginBottom: 8,
   },
   welcomeSubtitle: {
     fontSize: 16,
-    color: '#94A3B8',
-    fontFamily: 'Inter_400Regular',
-    textAlign: 'center',
+    color: "#94A3B8",
+    fontFamily: "Inter_400Regular",
+    textAlign: "center",
     lineHeight: 24,
   },
   imageContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 40,
   },
   placeholderImage: {
     width: 200,
     height: 200,
-    backgroundColor: '#1e293b',
+    backgroundColor: "#1e293b",
     borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 2,
-    borderColor: '#334155',
+    borderColor: "#334155",
   },
   placeholderText: {
     fontSize: 80,
   },
   imageText: {
     fontSize: 16,
-    color: '#94a3b8',
-    textAlign: 'center',
+    color: "#94a3b8",
+    textAlign: "center",
     marginTop: 16,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   actionContainer: {
     paddingBottom: 20,
   },
   primaryButton: {
-    backgroundColor: '#FFD166',
+    backgroundColor: "#FFD166",
     paddingVertical: 16,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 12,
   },
   primaryButtonText: {
-    color: '#0F172A',
+    color: "#0F172A",
     fontSize: 16,
-    fontFamily: 'Poppins_700Bold',
+    fontFamily: "Poppins_700Bold",
   },
   secondaryButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     paddingVertical: 16,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 2,
-    borderColor: '#FFD166',
+    borderColor: "#FFD166",
     marginBottom: 20,
   },
   secondaryButtonText: {
-    color: '#FFD166',
+    color: "#FFD166",
     fontSize: 16,
-    fontFamily: 'Poppins_600SemiBold',
+    fontFamily: "Poppins_600SemiBold",
   },
   divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 20,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#334155',
+    backgroundColor: "#334155",
   },
   dividerText: {
-    color: '#64748b',
+    color: "#64748b",
     fontSize: 14,
     marginHorizontal: 16,
   },
   guestButton: {
     paddingVertical: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   guestButtonText: {
-    color: '#94A3B8',
+    color: "#94A3B8",
     fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-    textDecorationLine: 'underline',
+    fontFamily: "Inter_400Regular",
+    textDecorationLine: "underline",
   },
   footer: {
     paddingBottom: 40,
@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 12,
-    color: '#64748b',
-    textAlign: 'center',
+    color: "#64748b",
+    textAlign: "center",
     lineHeight: 18,
   },
   linkText: {
-    color: '#2DD4BF',
-    textDecorationLine: 'underline',
+    color: "#2DD4BF",
+    textDecorationLine: "underline",
   },
 });
