@@ -51,7 +51,7 @@ export default function WelcomeScreen() {
           accessibilityRole="button"
           accessibilityLabel="Fazer login"
         >
-          <Text style={styles.primaryButtonText}>🎬 Entrar na Sessão</Text>
+          <Text style={styles.primaryButtonText}> Entrar na Sessão</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -60,7 +60,7 @@ export default function WelcomeScreen() {
           accessibilityRole="button"
           accessibilityLabel="Criar nova conta"
         >
-          <Text style={styles.secondaryButtonText}>🍿 Criar Minha Conta</Text>
+          <Text style={styles.secondaryButtonText}> Criar Minha Conta</Text>
         </TouchableOpacity>
 
         <View style={styles.divider}>

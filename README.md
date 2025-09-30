@@ -1,8 +1,81 @@
-# Welcome to your Expo app 👋
+# CineFila 🎞
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Estrutura do Projeto
 
-## Get started
+```
+app/
+   _layout.tsx            # Declaração das rotas no Expo Router
+   index.tsx              # Tela de boas-vindas (landing)
+   (auth)/
+      login.tsx            # Fluxo de autenticação de usuários
+      register.tsx         # Cadastro local com validação
+   movie/
+      index.tsx            # Hub principal após login
+
+assets/
+   fonts/                 # Fontes personalizadas utilizadas no tema
+   images/                # Ícones e ilustrações estáticas
+
+components/
+   CineFilaLogo.tsx       # Logotipo SVG do app
+   Filmstrip.tsx          # Ilustração decorativa
+   FilmReel.tsx           # Elemento visual extra
+   MovieActionButton.tsx  # Botão base reutilizável
+   SearchMovieButton.tsx  # Botão "Buscar Filme"
+   MovieQueueButton.tsx   # Botão "Fila de Filmes"
+   FavoriteMoviesButton.tsx
+   DislikedMoviesButton.tsx
+   LogoutButton.tsx
+
+constants/
+   Theme.ts               # Paleta de cores, tipografia, espaçamentos
+
+hooks/
+   useCineFilaFonts.ts    # Carregamento das fontes do Google Fonts
+
+utils/
+   auth.ts                # Helpers para estado de autenticação no AsyncStorage
+```
+
+## 📌 Navegação entre Telas
+
+- A navegação é controlada pelo **Expo Router** utilizando _file-based routing_.
+- `app/_layout.tsx` registra as pilhas `(auth)` (login/registro), a tela inicial (`index.tsx`) e o hub pós-login (`movie/index.tsx`).
+- O componente `router` é importado de `expo-router` para realizar redirecionamentos programáticos:
+  - `router.push("/(auth)/login")` e `router.push("/(auth)/register")` partindo da landing page.
+  - `router.replace("/movie")` após autenticação bem-sucedida, garantindo que o usuário veja o hub sem possibilidade de voltar para a tela de login com o botão físico.
+- O `useFocusEffect` em `app/movie/index.tsx` garante que os dados do usuário corrente sejam recarregados sempre que a tela ganhar foco.
+
+## Componentes Básicos e Estilização
+
+- Há um **design system leve** em `constants/Theme.ts` com cores cinematográficas, tipografia e espaçamentos padronizados.
+- Componentes visuais compartilhados (
+  `CineFilaLogo`, `Filmstrip`, `MovieActionButton` e variações) ficam em `components/` para reutilização em diferentes telas.
+- Os botões especializados (`SearchMovieButton`, `MovieQueueButton`, `FavoriteMoviesButton`, `DislikedMoviesButton` e `LogoutButton`) estendem `MovieActionButton`, garantindo consistência visual e acessibilidade (labels e `accessibilityRole`).
+- Os formulários de login e registro são construídos com `react-hook-form` + Zod, exibindo mensagens de erro com o esquema tipado.
+
+## 📌 Responsividade
+
+- Telas principais utilizam `ScrollView` com `contentContainerStyle` para garantir deslocamento em dispositivos menores.
+- Estilos baseiam-se no sistema de espaçamento (`Spacing`), tipografia (`Typography`) e cores (`Colors`) para manter proporções consistentes.
+- Uso de `StatusBar`, alinhamentos `flex` e `TouchableOpacity` com `activeOpacity` melhoram a experiência em diferentes tamanhos de tela.
+- Inputs e botões adotam `accessibilityLabel` e `returnKeyType` para facilitar o uso com teclado virtual e leitores de tela.
+
+## 📌 Autenticação
+
+- Cadastro (`app/(auth)/register.tsx`):
+  - Validação com Zod (nome, e-mail, senha e confirmação).
+  - Gera `passwordHash` com `expo-crypto` (SHA-256) antes de salvar.
+  - Persiste usuários no `AsyncStorage` (chave `users`).
+- Login (`app/(auth)/login.tsx`):
+  - Valida credenciais, recalcula o hash da senha e compara com os dados salvos.
+  - Salva o usuário autenticado em `AsyncStorage` (`currentUser`) para consultas posteriores.
+  - Redireciona à tela `movie/index.tsx` após sucesso e exibe `Alert` de boas-vindas.
+- Utilitários em `utils/auth.ts`: recuperação do usuário atual, verificação de sessão ativa e `logout` (remoção da chave `currentUser`).
+
+Essas seções documentam o estado atual do CineFila e servem como guia rápido para continuidade do desenvolvimento.
+
+## Get started no projeto
 
 1. Install dependencies
 
@@ -16,35 +89,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+# Equipe do Projeto
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<a href="https://github.com/betaniasilva"><img src="https://github.com/betaniasilva.png" width="80" height="80"></a> &nbsp;
+<a href="https://github.com/JoaoAANgr"><img src="https://avatars.githubusercontent.com/u/140200421?v=4" width="80" height="80"></a> &nbsp;
