@@ -1,6 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Crypto from "expo-crypto";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -81,6 +82,7 @@ export default function LoginScreen({
 
       await new Promise((r) => setTimeout(r, 700));
       onSubmitSuccess?.(values);
+      router.replace("/movie");
       Alert.alert(
         "🎬 Bem-vindo de volta!",
         `Olá, ${user.name}! Login realizado com sucesso no CineFila!`

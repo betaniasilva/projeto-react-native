@@ -8,7 +8,14 @@ export default function RootLayout() {
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.night }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors.night,
+        }}
+      >
         <ActivityIndicator size="large" color={Colors.pipoca} />
       </View>
     );
@@ -22,30 +29,37 @@ export default function RootLayout() {
         },
         headerTintColor: Colors.textPrimary,
         headerTitleStyle: {
-          fontWeight: 'bold',
-          fontFamily: 'Poppins_600SemiBold',
+          fontWeight: "bold",
+          fontFamily: "Poppins_600SemiBold",
         },
       }}
     >
       <Stack.Screen
         name="index"
         options={{
-          title: 'CineFila',
-          headerShown: false
+          title: "CineFila",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="(auth)/login"
         options={{
-          title: 'Entrar',
-          presentation: 'card'
+          title: "Entrar",
+          presentation: "card",
         }}
       />
       <Stack.Screen
         name="(auth)/register"
         options={{
-          title: 'Criar Conta',
-          presentation: 'card'
+          title: "Criar Conta",
+          presentation: "card",
+        }}
+      />
+      <Stack.Screen
+        name="movie/index"
+        options={{
+          title: "CineFila",
+          headerShown: false,
         }}
       />
     </Stack>
