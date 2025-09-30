@@ -20,15 +20,6 @@ import {
   Typography,
 } from "../../constants/Theme";
 
-/**
- * LoginScreen.tsx
- * - React Native + Expo + TypeScript
- * - Validação com React Hook Form + Zod
- * - Login com email e senha
- * - Verifica credenciais contra os dados salvos no AsyncStorage
- * - Salva informações do usuário logado localmente
- */
-
 const schema = z.object({
   email: z.string().email("Informe um e-mail válido."),
   password: z.string().min(6, "A senha deve ter ao menos 6 caracteres."),
@@ -58,23 +49,19 @@ export default function LoginScreen({
   });
 
   const onSubmit = async (values: FormValues) => {
-    // LOG 1: Verificando se a função foi chamada
     console.log("Função onSubmit (login) foi chamada!");
     console.log("Dados recebidos do formulário:", values);
 
     setLoading(true);
     try {
-      // 1. Gerar hash da senha informada
       const passwordHash = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         values.password
       );
 
-      // 2. Ler os usuários salvos no AsyncStorage
       const existingUsersJson = await AsyncStorage.getItem("users");
       const users = existingUsersJson ? JSON.parse(existingUsersJson) : [];
 
-      // 3. Verificar se existe um usuário com o e-mail e senha corretos
       const user = users.find(
         (u: any) => u.email === values.email && u.passwordHash === passwordHash
       );
@@ -83,7 +70,6 @@ export default function LoginScreen({
         throw new Error("E-mail ou senha incorretos.");
       }
 
-      // 4. Salvar informações do usuário logado
       await AsyncStorage.setItem(
         "currentUser",
         JSON.stringify({
@@ -93,7 +79,6 @@ export default function LoginScreen({
         })
       );
 
-      // 5. Simula a chamada da API e exibe o alerta de sucesso
       await new Promise((r) => setTimeout(r, 700));
       onSubmitSuccess?.(values);
       Alert.alert(
@@ -101,7 +86,6 @@ export default function LoginScreen({
         `Olá, ${user.name}! Login realizado com sucesso no CineFila!`
       );
     } catch (e: any) {
-      // LOG 2: Verificando se ocorreu algum erro
       console.error("ERRO CAPTURADO NO CATCH (LOGIN):", e);
       Alert.alert("Erro ao entrar", e?.message ?? "Tente novamente.");
     } finally {
