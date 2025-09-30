@@ -65,7 +65,6 @@ export default function WelcomeScreen() {
 
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>ou</Text>
           <View style={styles.dividerLine} />
         </View>
       </View>
@@ -73,10 +72,7 @@ export default function WelcomeScreen() {
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          Ao continuar, você concorda com nossos{" "}
-          <Text style={styles.linkText}>Termos de Uso</Text> e{" "}
-          <Text style={styles.linkText}>Política de Privacidade</Text> do
-          CineFila
+          Todos os direitos reservados a equipe CineFila 🎬
         </Text>
       </View>
     </View>
