@@ -13,6 +13,7 @@ import FavoriteMoviesButton from "../../components/FavoriteMoviesButton";
 import LogoutButton from "../../components/LogoutButton";
 import MovieQueueButton from "../../components/MovieQueueButton";
 import SearchMovieButton from "../../components/SearchMovieButton";
+import SpeechButton from "../../components/SpeechButton";
 import {
   BorderRadius,
   Colors,
@@ -81,6 +82,11 @@ export default function MovieHubScreen() {
         <Text style={styles.subtitle}>
           Escolha um dos caminhos abaixo para continuar sua jornada no CineFila.
         </Text>
+
+        {/* Proof-of-concept: read the visible hub text out loud */}
+        <SpeechButton
+          text={`Olá ${user?.name ?? "cinéfilo"}! Escolha um dos caminhos abaixo para continuar sua jornada no CineFila.`}
+        />
 
         <View style={styles.buttonsGrid}>
           <SearchMovieButton onPress={handleSearchMovie} />

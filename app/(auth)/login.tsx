@@ -6,13 +6,13 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
-  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useToast } from "../../components/ToastProvider";
 import { z } from "zod";
 import {
   BorderRadius,
@@ -39,6 +39,7 @@ export default function LoginScreen({
 }: Props) {
   const [secure, setSecure] = useState(true);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const {
     control,
@@ -83,13 +84,10 @@ export default function LoginScreen({
       await new Promise((r) => setTimeout(r, 700));
       onSubmitSuccess?.(values);
       router.replace("/movie");
-      Alert.alert(
-        "🎬 Bem-vindo de volta!",
-        `Olá, ${user.name}! Login realizado com sucesso no CineFila!`
-      );
+      toast.showToast({ message: `🎬 Bem-vindo de volta! Olá, ${user.name}! Login realizado com sucesso no CineFila!`, type: 'success' });
     } catch (e: any) {
       console.error("ERRO CAPTURADO NO CATCH (LOGIN):", e);
-      Alert.alert("Erro ao entrar", e?.message ?? "Tente novamente.");
+      toast.showToast({ message: e?.message ?? 'Tente novamente.', type: 'error' });
     } finally {
       setLoading(false);
     }

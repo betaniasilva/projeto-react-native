@@ -3,7 +3,9 @@ import * as Crypto from 'expo-crypto';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
+import { useToast } from '../../components/ToastProvider';
 import { z } from 'zod';
 import { BorderRadius, Colors, Spacing, Typography } from '../../constants/Theme';
 
@@ -36,6 +38,7 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
   const [securePassword, setSecurePassword] = useState(true);
   const [secureConfirmPassword, setSecureConfirmPassword] = useState(true);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -81,13 +84,17 @@ export default function RegisterScreen({ onSubmitSuccess, loading: loadingProp }
 
       // 5. Simula a chamada da API e exibe o alerta de sucesso
       await new Promise((r) => setTimeout(r, 700));
-      onSubmitSuccess?.(values); // Chama a função de sucesso, se houver
-      Alert.alert('🍿 Conta criada!', 'Bem-vindo ao CineFila! Seus dados foram salvos localmente.');
+  onSubmitSuccess?.(values); // Chama a função de sucesso, se houver
+  toast.showToast({ message: '🍿 Conta criada! Bem-vindo ao CineFila! Seus dados foram salvos localmente.', type: 'success' });
+
+      // Redireciona para a tela de login para que o usuário possa entrar
+      router.replace('/(auth)/login');
 
     } catch (e: any) {
       // LOG 2: Verificando se ocorreu algum erro
       console.error('ERRO CAPTURADO NO CATCH:', e);
-      Alert.alert('Erro ao criar conta', e?.message ?? 'Tente novamente.');
+  const message = e?.message ?? 'Tente novamente.';
+  toast.showToast({ message, type: 'error' });
     } finally {
       setLoading(false);
     }
